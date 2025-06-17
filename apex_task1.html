@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TASK-1</title>
+    <style>
+    
+        main{
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            
+        }
+        header{
+            text-align: center;
+            padding: 10px;
+           
+        }
+
+        section{
+            margin-top: 5px;
+            background-color: rgb(91, 80, 160);
+            height: 400px;
+            width: 400px;
+            margin: 0 auto;
+            display: flex;
+            border-radius: 5px;
+            flex-direction: column;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+
+        input{
+            outline: none;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+            width: 100%;
+            margin-bottom: 10px;    
+            
+        }
+      
+         body{
+            background-image: url('https://th.bing.com/th/id/OIP.ITu5iJ6RqfNBC1NZcIid4AHaF7?w=217&h=180&c=7&r=0&o=7&pid=1.7&rm=3');
+            font-family: Arial, sans-serif;
+            margin: 250px auto;
+            padding: 0;
+            box-sizing: border-box;
+
+         }
+         button{
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background-color:  rgb(12, 12, 255);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            &:hover{
+                background-color: rgb(31, 31, 197);
+            }
+        }
+    </style>
+</head>
+<body>
+   <section>
+    <main>
+        <h1>Login Page</h1> 
+        <form action="#login" method="post">
+        <label for="username">Username:</label>
+        <p>
+            <input type="text" id="username" placeholder="Enter your username">
+        </p>
+        <label for="password">Password:</label>
+        <p>
+            <input type="password" id="password" placeholder="Enter your password">
+        </p>
+        <button id="loginBtn">Login</button>
+        <p>Don't have an account?<a href="#"> Register</a></p>
+       </form>
+    </main>
+    </section>
+    <script>
+  const button = document.getElementById("loginBtn");
+
+  button.addEventListener("click", function(event) {
+    event.preventDefault(); // Prevents form from submitting
+    alert("Login successful!");
+  });
+</script>
+
+</body>
+</html>
