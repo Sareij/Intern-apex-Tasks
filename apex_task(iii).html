@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do List</title>
+  <style>
+/* Todo List Styles */
+.todo-app {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.input-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#new-task {
+  flex: 1;
+  padding: 0.5rem;
+}
+
+#add-task {
+  padding: 0.5rem 1rem;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background: #4CAF50;
+  color: white;
+}
+
+#task-list {
+  list-style: none;
+  padding: 0;
+}
+
+#task-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+#task-list li.completed {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.delete-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+}
+  </style>
+</head>
+<body>
+  <div class="todo-app">
+    <h1>To-Do List</h1>
+    <div class="input-container">
+      <input type="text" id="new-task" placeholder="Add a new task...">
+      <button id="add-task">Add Task</button>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="active">Active</button>
+      <button class="filter-btn" data-filter="completed">Completed</button>
+    </div>
+
+    <ul id="task-list"></ul>
+  </div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const taskInput = document.getElementById('new-task');
+  const addButton = document.getElementById('add-task');
+  const taskList = document.getElementById('task-list');
+  const filterButtons = document.querySelectorAll('.filter-btn');
+
+  // Load tasks from local storage
+  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+  // Render tasks based on filter
+  function renderTasks(filter = 'all') {
+    taskList.innerHTML = '';
+    
+    const filteredTasks = filter === 'all' 
+      ? tasks 
+      : filter === 'active' 
+        ? tasks.filter(task => !task.completed) 
+        : tasks.filter(task => task.completed);
+
+    filteredTasks.forEach((task, index) => {
+      const li = document.createElement('li');
+      if (task.completed) li.classList.add('completed');
+      
+      li.innerHTML = `
+        <span>${task.text}</span>
+        <div>
+          <button class="complete-btn">${task.completed ? '✓' : '◻'}</button>
+          <button class="delete-btn">✗</button>
+        </div>
+      `;
+      
+      taskList.appendChild(li);
+    });
+  }
+
+  // Add new task
+  function addTask() {
+    const text = taskInput.value.trim();
+    if (text) {
+      tasks.push({ text, completed: false });
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      taskInput.value = '';
+      renderTasks(document.querySelector('.filter-btn.active').dataset.filter);
+    }
+  }
+
+  // Event listeners
+  addButton.addEventListener('click', addTask);
+  taskInput.addEventListener('keypress', (e) => e.key === 'Enter' && addTask());
+
+  // Event delegation for dynamic buttons
+  taskList.addEventListener('click', (e) => {
+    const li = e.target.closest('li');
+    if (!li) return;
+    
+    const index = Array.from(taskList.children).indexOf(li);
+    
+    if (e.target.classList.contains('complete-btn')) {
+      tasks[index].completed = !tasks[index].completed;
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTasks(document.querySelector('.filter-btn.active').dataset.filter);
+    }
+    
+    if (e.target.classList.contains('delete-btn')) {
+      tasks.splice(index, 1);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTasks(document.querySelector('.filter-btn.active').dataset.filter);
+    }
+  });
+
+  // Filter buttons
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      renderTasks(button.dataset.filter);
+    });
+  });
+
+  // Initial render
+  renderTasks();
+});
+  </script>
+</body>
+</html>

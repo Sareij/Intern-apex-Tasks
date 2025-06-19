@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr; /* Sidebar takes 1 part, content 3 parts */
+  gap: 20px;
+}
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* Stack on mobile */
+  }
+  .navbar {
+    flex-direction: column; /* Nav links stack vertically */
+  }
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #333;
+  color: white;
+}
+
+/* CSS Grid Layout */
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr; /* Sidebar | Content */
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* Stack on small screens */
+  }
+}
+.form-group {
+  margin-bottom: 1rem;
+  text-align: center;
+  
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  margin-right: 450px;
+}
+
+input, textarea {
+  width: 35%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 700px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h2 {
+  color: #2c3e50;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  color: #7f8c8d;
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+  <div class="logo">MySite</div>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+<main class="grid-container">
+  <aside class="sidebar">Sidebar</aside>
+  <section class="content">
+    <h2>Contact Us</h2>
+    <!-- Insert the form from Days 1-3 here -->
+     
+        <div class="form-header">
+  <h2>Get In Touch</h2>
+  <p>Have questions? Send us a message and we'll respond as soon as possible.</p>
+</div>
+<form id="contact-form">
+  <!-- form fields here -->
+
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+  </div>
+  
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+  </div>
+  
+  <div class="form-group">
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" required></textarea>
+  </div>
+  
+  <button type="submit" >Send Message</button>
+</form>
+
+  </section>
+</main>
+<script>
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const message = document.getElementById('message').value;
+  
+  let isValid = true;
+  
+  // Clear previous errors
+  document.querySelectorAll('.error').forEach(el => el.remove());
+  
+  // Name validation
+  if (!name) {
+    showError('name', 'Name is required');
+    isValid = false;
+  }
+  
+  // Email validation
+  if (!email) {
+    showError('email', 'Email is required');
+    isValid = false;
+  } else if (!isValidEmail(email)) {
+    showError('email', 'Please enter a valid email');
+    isValid = false;
+  }
+  
+  // Message validation
+  if (!message) {
+    showError('message', 'Message is required');
+    isValid = false;
+  } else if (message.length < 10) {
+    showError('message', 'Message should be at least 10 characters');
+    isValid = false;
+  }
+  
+  if (isValid) {
+    // Form is valid, submit or process data
+    alert('Form submitted successfully!');
+    this.reset();
+  }
+});
+
+function showError(fieldId, message) {
+  const field = document.getElementById(fieldId);
+  const errorElement = document.createElement('div');
+  errorElement.className = 'error';
+  errorElement.style.color = 'red';
+  errorElement.textContent = message;
+  field.parentNode.insertBefore(errorElement, field.nextSibling);
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+</script>
+</body>
+</html>
